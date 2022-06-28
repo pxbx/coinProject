@@ -24,6 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author pxbx
+ * @since 2022-06-28
+ */
 @ControllerAdvice
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class ApplicationControllerAdvise {
@@ -32,6 +36,10 @@ public class ApplicationControllerAdvise {
     @Autowired
     RequestContext requestContext;
 
+    /**
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
         HttpHeaders headers = new HttpHeaders();
@@ -53,10 +61,19 @@ public class ApplicationControllerAdvise {
         }
     }
 
+    /**
+     * @param responseCode
+     * @return
+     */
     private String createErrorResponse(String responseCode) {
         return createErrorResponse(responseCode, null);
     }
 
+    /**
+     * @param responseCode
+     * @param exception
+     * @return
+     */
     private String createErrorResponse(String responseCode, Exception exception) {
         ResponseObject responseObject = new ResponseObject();
         responseObject.setRequestId(requestContext.getRequestId());

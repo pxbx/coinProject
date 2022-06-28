@@ -1,13 +1,7 @@
 package com.pinakibarik.coinexchangeapi.controller;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.pinakibarik.coinexchangeapi.app.CoinExchangeApiApplication;
 import com.pinakibarik.coinexchangeapi.context.RequestContext;
-import com.pinakibarik.coinexchangeapi.exception.ApplicationException;
-import com.pinakibarik.coinexchangeapi.io.request.RequestObject;
-import com.pinakibarik.coinexchangeapi.io.response.ResponseObject;
 import com.pinakibarik.coinexchangeapi.service.RequestProcessService;
-import com.pinakibarik.coinexchangeapi.utils.JsonUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * @author pxbx
+ * @since 2022-06-28
+ */
 @RestController
 @RequestMapping("${key.server.context.root}")
 public class ApplicationController {
@@ -33,6 +28,10 @@ public class ApplicationController {
     @Autowired
     RequestProcessService requestProcessService;
 
+    /**
+     * @param payload
+     * @return
+     */
     @PostMapping(
             value = "/getCoinExchange",
             produces = MediaType.APPLICATION_JSON_VALUE,

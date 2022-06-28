@@ -9,6 +9,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author pxbx
+ * @since 2022-06-27
+ */
 @Configuration
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -20,6 +24,6 @@ public class CoinExchangeApiApplication {
 
     public static void main(String[] args) {
         configurableApplicationContext = SpringApplication.run(CoinExchangeApiApplication.class, args);
-        logger.info("RUN WAS INITIATED");
+        logger.info("APPLICATION STARTED");
     }
 }
