@@ -35,3 +35,5 @@ build/
 *.jar
 *.class
 /target/
+.mvn
+mvnw*
