@@ -6,6 +6,11 @@ import java.math.BigDecimal;
 
 @Data
 public class CoinSegments {
-    BigDecimal denomination;
+    Double denomination;
     int quantity;
+
+    public CoinSegments(Double denomination, int quantity){
+        this.quantity = quantity;
+        this.denomination = denomination;
+    }
 }

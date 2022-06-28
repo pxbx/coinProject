@@ -1,10 +1,13 @@
 package com.pinakibarik.coinexchangeapi.service.impl;
 
+import com.pinakibarik.coinexchangeapi.coinrepo.CoinRepository;
+import com.pinakibarik.coinexchangeapi.coinrepo.CoinRequest;
 import com.pinakibarik.coinexchangeapi.context.RequestContext;
 import com.pinakibarik.coinexchangeapi.exception.ApplicationException;
 import com.pinakibarik.coinexchangeapi.io.request.RequestObject;
 import com.pinakibarik.coinexchangeapi.io.response.CoinSegments;
 import com.pinakibarik.coinexchangeapi.io.response.ResponseObject;
+import com.pinakibarik.coinexchangeapi.service.CoinRequestService;
 import com.pinakibarik.coinexchangeapi.service.RequestProcessService;
 import com.pinakibarik.coinexchangeapi.service.ValidationService;
 import com.pinakibarik.coinexchangeapi.utils.JsonUtility;
@@ -26,6 +29,9 @@ public class RequestProcessServiceImpl implements RequestProcessService {
     @Autowired
     ValidationService validateService;
 
+    @Autowired
+    CoinRequestService coinRequestService;
+
     @Override
     public String processRequest(String payload) throws ApplicationException {
         RequestObject requestObject = validateService.validateRequest(payload);
@@ -37,8 +43,31 @@ public class RequestProcessServiceImpl implements RequestProcessService {
         if (billAmount == 0) {
             return createResponse("0000", new ArrayList<>());
         } else {
-            return createResponse("9999", new ArrayList<>());
+            CoinRequest coinRequest = coinRequestService.getCoinRequest(billAmount);
+            Double availableAmount = CoinRepository.getAvailableAmount();
+            if (availableAmount < billAmount)
+                throw new ApplicationException("0007");
+            boolean reserveStatus = CoinRepository.reserve(coinRequest);
+            if (reserveStatus) {
+                boolean claimStatus = CoinRepository.claim(coinRequest);
+                if (claimStatus) {
+                    return createResponse("0000", toCoinSegment(coinRequest));
+                } else {
+                    throw new ApplicationException("0007");
+                }
+            } else {
+                throw new ApplicationException("0007");
+            }
         }
+    }
+
+    private List<CoinSegments> toCoinSegment(CoinRequest coinRequest) {
+        List<CoinSegments> coinSegments = new ArrayList<>();
+        for (CoinRequest.Coin coin : coinRequest.getCoins()) {
+            coinSegments.add(new CoinSegments(coin.getValue(), coin.getCount()));
+        }
+
+        return coinSegments;
     }
 
     private String createResponse(String responseCode, List<CoinSegments> coinSegmentsList) {
