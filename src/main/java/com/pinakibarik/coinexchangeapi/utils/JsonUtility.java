@@ -10,6 +10,10 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import java.util.Map;
 
 public class JsonUtility {
+    public static final <T extends Object> T deserialize(String json, Class<T> clazz) throws UnrecognizedPropertyException, InvalidFormatException {
+        return deserialize(json, clazz, null);
+    }
+
     public static final <T extends Object> T deserialize(String json, Class<T> clazz, Map<DeserializationFeature, Boolean> features) throws UnrecognizedPropertyException, InvalidFormatException {
         if (json == null)
             return null;
