@@ -2,6 +2,7 @@ package com.pinakibarik.coinexchangeapi.coinrepo;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class CoinRequest {
     private String requestId;
 
     @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.PUBLIC)
     private Double amount = 0.0D;
 
     private CoinRequest() {
