@@ -51,6 +51,9 @@ public class ValidationServiceImpl implements ValidationService {
             throw new ApplicationException("0004");
         }
 
+        if (requestObject == null)
+            throw new ApplicationException("0003");
+
         Integer amount = requestObject.getAmount();
         if (amount == null)
             throw new ApplicationException("0004");
